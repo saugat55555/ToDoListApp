@@ -1,0 +1,60 @@
+{% extends 'home.html'%}
+
+{% block form %}
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group mt-4">
+     
+      <input type="text" class="form-control"  placeholder="Add task" name = 'task'>
+    </div>
+    <button type="submit" class="btn btn-primary mb-4 ml-2">Submit</button>
+  </form>
+
+{% endblock %}
+
+
+{% block content %}
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">TASKS</th>
+        <th scope="col">COMPLETED</th>
+        <th scope="col">DELETE</th>
+    </thead>
+    <tbody>
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-primary alert-dismissable" role="alert">
+            <button class="close" data-dismiss= 'alert'>
+                <small><sup>x</sup></small>
+            </button>
+            {{message}}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        {% for all in hello %}
+        {% if all.done %}
+        <tr>
+
+            <td class= 'stripe'>{{all.task}}</td>
+            <td><a href = "{% url 'uncross' all.id %}"> Incompleted </a></td>
+            <td><a href = "{% url 'delete' all.id %}">delete</a></td>
+          </tr>
+        {% else %}
+
+           <tr>
+
+            <td>{{all.task}}</td>
+            <td><a href = "{% url 'cross' all.id %}">Completed</a></td>
+            <td><a href = "{% url 'delete' all.id %}">delete</a></td>
+           </tr>
+       {% endif %}
+      {% endfor %}
+ 
+    </tbody>
+
+  </table>
+
+{% endblock %}
